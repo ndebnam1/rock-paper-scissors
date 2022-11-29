@@ -1,9 +1,9 @@
 let options = ["Rock", "Paper", "Scissors"];
-let random = Math.floor(Math.random() * (3 - 1 + 1)) + 1;
+let random = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
 let playerScore = 0;
 let computerScore = 0;
 let playersPick;
-let computerPick = getComputersPick();
+const computerPick = getComputersPick();
 let loseMessage = "You lose! ";
 let winMessage = "You win! ";
 
@@ -11,16 +11,25 @@ let winMessage = "You win! ";
 
 
 function getComputersPick() {
-    return options[random];
+    switch (random) {
+        case 0:
+            return options[0];
+            break;
+        case 1:
+            return options[1];
+            break;
+        case 2:
+            return options[2];
+            break;
+    }
 }
 
 function playRound(playersPick, computerPick) {
-    playersPick = prompt("Enter your choice: ");
     if (playersPick == computerPick) {
         return "Its a Tie!";   
     }
     if (playersPick == options[0] && computerPick == options[1]) {
-        console.log(loseMessage + " Paper beats Rock!");
+        return loseMessage + " Paper beats Rock!";
         computerScore++;
     }
     if (playersPick == options[0] && computerPick == options[2]) {
@@ -49,6 +58,6 @@ function playRound(playersPick, computerPick) {
 let rBtn = document.querySelector('#rBtn');
 let pBtn = document.querySelector('#pBtn');
 let sBtn = document.querySelector('#sBtn');
-rBtn.addEventListener('click',msg => console.log("It works"));
-pBtn.addEventListener('click',msg => console.log("It works too"));
-sBtn.addEventListener('click', msg => console.log("this its works too"));
+rBtn.addEventListener('click',msg => console.log(playRound("Rock",getComputersPick())));
+pBtn.addEventListener('click',msg => console.log(playRound("Paper",computerPick)));
+sBtn.addEventListener('click', msg => console.log(playRound("Scissors",computerPick)));
