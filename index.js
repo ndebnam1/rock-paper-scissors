@@ -1,81 +1,116 @@
-let options = ["Rock", "Paper", "Scissors"];
-let random = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
-let playerScore = 0;
-let computerScore = 0;
-let playersPick;
-let computerPick = getComputersPick();
-let loseMessage = "You lose! ";
-let winMessage = "You win! ";
+let winners = [];
+const choices = ['rock', 'paper', 'scissors'];
 
-
-function setPlayerPick() {
-    rBtn
+function resetGame() {
+    //reset the game
+    winners =[];
+    document.querySelector(".playerScore").textContent = "Score: 0";
+    document.querySelector(".computerScore").textContent = "Score: 0";
+    document.querySelector(".ties").textContent = "Ties: 0";
+    document.querySelector(".winner").textContent = "";
+    document.querySelector(".playerChoice").textContent = "";
+    document.querySelector(".computerChoice").textContent = "";
+    document.querySelector(".reset").style.display = "none";
 }
-
-function getComputersPick() {
-    switch (random) {
-        case 0:
-            return options[0];
-            break;
-        case 1:
-            return options[1];
-            break;
-        case 2:
-            return options[2];
-            break;
+function startGame() {
+    // Want to play the game until someome gets to 5
+    let buttons = document.querySelectorAll("img");
+    for (let i = 0; i < buttons;i++) {
+        b.addEventListener("click", () => {
+            if (b.id) {
+                playRound(b.id);
+            }
+        })
+    
     }
 }
 
- function playRound(playersPick, computerPick) {
-     displayChoices(playersPick);
-     
-         if (playersPick == computerPick) {
-             return "Its a Tie!";
-         }
-         if (playersPick == options[0] && computerPick == options[1]) {
-             return loseMessage + " Paper beats Rock!";
-             computerScore++;
-         }
-         if (playersPick == options[0] && computerPick == options[2]) {
-             return winMessage + " Rock beats Scissors!";
-             playerScore++;
-         }
-         if (playersPick == options[1] && computerPick == options[0]) {
-             return winMessage + " Paper beats Rock!";
-             playerScore++;
-         }
-         if (playersPick == options[1] && computerPick == options[2]) {
-             return loseMessage + " Scissors beats Paper!";
-             computerScore++;
-         }
-         if (playersPick == options[2] && computerPick == options[0]) {
-             return loseMessage + " Rock beats Scissors!";
-             computerScore++;
-         }
-         if (playersPick == options[2] && computerPick == options[1]) {
-             return winMessage + " Scissors beats Paper!";
-             playerScore++;
-         }
-     
-}
 
-async function displayChoices(playersPick) {
-    console.log(`You Chose: ${playersPick} `);
-    console.log(`The Computer Chose: ${computerPick}`);
-	
+function playRound(playerChoice) {
+    let wins = checkWins();
+    if (wins => 5) {
+        return
+    }
+
+    const computerChoice = computerSelect();
+
+	const winner = checkWinner(playerChoice, computerChoice);
+	winners.push(winner);
+	tallyWins();
+	displayRound(playerChoice, computerChoice, winner);
+	wins = checkWins();
+		if (wins == 5) {
+			// show the end results
+			//change the button to visible
+			//change the text to displau winner
+			displayEnd();
+		}
 }
 
 
+function displayEnd(){
+    let playerWins = winners.filter((item) => item == "Player").length;
+    if (playerWins == 5) {
+        document.querySelector(".winner").textContent = "You won five games congrats"
+
+    } else {
+        document.querySelector(".winner").textContent = "Sorry, the computer won five times"
+    }
+    document.querySelector("reset").style.display = 'flex';
+}
 
 
+function displayRound(playerChoice, computerChoice, winner) {
+    document.querySelector(".playerChoice").textContent = `You Chose: ${playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1)}`;
+    document.querySelector(".computerChoice").textContent = `You The Computer Chose: ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)}`;
+
+    document.querySelector("winner").textContent = `Round Winner: ${winner}`;
 
 
-let rBtn = document.querySelector('#rBtn');
-let pBtn = document.querySelector('#pBtn');
-let sBtn = document.querySelector('#sBtn');
+}
+
+function tallyWins() {
+    const pWinCount = winners.filter((item) => item == "Player").length;
+    const cWinCount = winners.filter((item) => item == "Computer").length;
+    const ties = winners.filter((item) => item == "Tie").length;
+    document.querySelector(".playerScore").textContent = `Score: ${pWinCount}`;
+    document.querySelector(".computerScore").textContent = `Score: ${cWinCount}`;
+    document.querySelector(".ties").textContent = `Score: ${ties}`;
+    
+
+    
+}
 
 
-rBtn.addEventListener('click', sRock => playersPick = options[0]);
-pBtn.addEventListener('click', sPaper => playersPick = options[1]);
-sBtn.addEventListener('click', sScis => playersPick = options[2]);
+function computerSelect() {
+    // Note: you need to update the dom with the computer selection
+    return choices[Math.floor(Math.random() * choices.length)];
+}
 
+function checkWins() {
+    const pWinCount = winners.filter((item) => item == "Player").length;
+    const cWinCount = winners.filter((item) => item == "Computer").length;
+    return Math.max(pWinCount, cWinCount);
+}
+
+function checkWinner(choice1, choice2) {
+    if (
+        (choice1 == 'rock' && choice2 == 'scissors') ||
+        (choice1 == 'scissors' && choice2 == 'paper') ||
+        (choice1 == 'paper' && choice2 == 'rock')
+    ) {
+        return "Player";
+    } else if (choice1 == choice2) {
+        return 'Tie';
+    } else {
+        return 'Computer';
+    }
+}
+
+function setWins() {
+    const pWinCount = winners.filter((item) => item == "Player").length;
+    const cWinCount = winners.filter((item) => item == "Computer").length;
+    const ties = winners.filter((item) => item == "Tie").length;
+}
+
+startGame();
