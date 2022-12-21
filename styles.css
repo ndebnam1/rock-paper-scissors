@@ -15,7 +15,6 @@ body{
 .footer{
      display:flex;
     justify-content: center;
-    background-color: #d97a7c;
 }
 .header{
 }
@@ -80,10 +79,11 @@ body{
 .game{
     box-sizing: border-box;
     border-style: solid;
-    border-radius: 5px;
-    width:700px;
+    border-radius: 10px;
+    width:750px;
     height: auto;
     background-color: #808080;
+    
 
     
 }
