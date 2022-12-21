@@ -5,14 +5,19 @@ const choiceBtns = document.querySelectorAll(".choiceButton");
 let playerChoice;
 let computerChoice;
 let result;
+let computerScore;
+let playerScore;
+
+
+
 
 choiceBtns.forEach(button => button.addEventListener("click", () => {
 
-    playerChoice = button.textContent;
+    playerChoice = button.id;
     getComputerChoice();
     playerText.textContent = `Player: ${playerChoice}`;
     computerText.textContent = `Computer: ${computerChoice}`;
-    results.textContent = checkWinner();
+    results.textContent = `Results: ${checkWinner()}`;
 }));
 
 function getComputerChoice() {
@@ -31,19 +36,39 @@ function getComputerChoice() {
             break;
     }
 }
-
-    function checkWinner() {
+function checkWinner() {
+        
         if (playerChoice == computerChoice) {
             return "Its a tie!";
 
         }
         else if (computerChoice == "Rock") {
-            return (playerChoice == "Paper") ? "You win!" : "You lose!"
+            return (playerChoice == "Paper") ? "You Win!! Paper beats Rock!": "You lose!! Rock beats Scissors"
         }
         else if (computerChoice == "Paper") {
-            return (playerChoice == "Scissors") ? "You win!" : "You lose!"
+            return (playerChoice == "Scissors") ? "You win!! Scissors beats Paper" : "You lose! Paper beats Rock!"
         }
         else if (computerChoice == "Scissors") {
-            return (playerChoice == "Rock") ? "You win!" : "You lose!"
+            return (playerChoice == "Rock") ? "You win!! Rock beats Scissors" : "You lose! Scissors beats Paper"
         }
+    updateScore();
     }
+
+function updateScore() {
+    if (playerChoice == computerChoice) {
+        playerScore += 1;
+        computerScore += 1;
+    }
+    else if (computerChoice == "Rock") {
+        return(playerChoice == "Paper") ? playerScore +=1 : computerScore += 1
+    }
+    else if (computerChoice == "Paper") {
+        return(playerChoice == "Scissors") ? playerScore +=1 : computerScore += 1
+    }
+    else if (computerChoice == "Scissors") {
+        return(playerChoice == "Rock") ? playerScore +=1 : computerScore += 1
+    }    
+    return `Your Score: ${playerScore}\nComputer Score: ${computerScore}`
+}
+    
+
